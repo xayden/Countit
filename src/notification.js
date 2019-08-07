@@ -34,7 +34,11 @@ function getUserPermission() {
   });
 }
 
-serviceWorker = registerServiceWorker();
+async function main() {
+  serviceWorker = await registerServiceWorker();
+}
+
+main();
 
 export function supportsNotification() {
   return supportLocalNotification;

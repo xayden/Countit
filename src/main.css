@@ -1,0 +1,117 @@
+/* @import url('https://fonts.googleapis.com/css?family=Great+Vibes&display=swap'); */
+@import url('https://fonts.googleapis.com/css?family=Tangerine:700&display=swap');
+
+.bg-dark {
+  background-color: #191919 !important;
+}
+
+.bg-light {
+  background-color: #f1f1f1 !important;
+}
+
+.text-danger {
+  color: #ff5555 !important;
+}
+
+.text-muted {
+  font-size: 14px;
+}
+
+nav {
+  background-color: #0c0c0ca4 !important;
+}
+
+.navbar {
+  justify-content: center;
+  /* font-family: 'Great Vibes', cursive; */
+  font-family: 'Tangerine', cursive;
+  padding: 0;
+}
+
+.navbar-brand {
+  font-size: 32px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.h-150 {
+  min-height: 150px;
+  max-height: 150px;
+}
+
+.h-196 {
+  max-height: 196px;
+  min-height: 196px;
+}
+
+/* Buttons */
+
+.btn {
+  font-size: 0.8rem;
+}
+
+.btn:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.btn-success {
+  background-color: #a3ddba;
+  color: #217844;
+  border: 0;
+}
+
+.btn-success:hover {
+  background-color: #4e9e6e;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: rgba(255, 42, 42, 0.5);
+  color: #aa0000;
+  border: 0;
+}
+
+.btn-danger:hover {
+  background-color: rgb(185, 65, 65);
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: rgb(77, 77, 77, 0.2);
+  color: #4d4d4d;
+  border: 0;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(34, 34, 34, 0.61);
+  color: #e4e4e4;
+}
+
+.btn-sm {
+  padding: 0.2rem 0.5rem;
+}
+
+.bg-danger {
+  background-color: #ff8080 !important;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.paused {
+  animation: anim infinite 1.5s linear;
+}
+
+@keyframes anim {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
