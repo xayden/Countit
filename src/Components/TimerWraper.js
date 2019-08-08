@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
+import Timer from './Timer';
 
 export default class TimerWraper extends Component {
   constructor(props) {
     super(props);
     this.state = {
       alarmName: 'default',
-      time: 0
+      time: 0,
+      editing: false,
+      name: ''
     };
+    this.input = React.createRef();
   }
 
   componentWillMount() {
@@ -16,28 +20,62 @@ export default class TimerWraper extends Component {
     });
   }
 
-  render() {
-    let seconds = Math.floor((this.state.time / 1000) % 60),
-      minutes = Math.floor((this.state.time / (1000 * 60)) % 60),
-      hours = Math.floor((this.state.time / (1000 * 60 * 60)) % 24);
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.currentPlayingTimer !== this.state._id &&
+      this.props.currentPlayingTimer === this.state._id
+    ) {
+      this.resume();
+    } else if (
+      prevProps.currentPlayingTimer === this.state._id &&
+      this.props.currentPlayingTimer !== this.state._id
+    ) {
+      this.pause();
+    } else if (!prevState.editing && this.state.editing) {
+      const node = this.input.current;
+      node.focus();
+      node.select();
+    }
+  }
 
-    hours = hours < 10 ? '0' + hours : hours;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds;
+  handleTitleEdit = () => {
+    this.setState({ editing: true, name: this.props.name });
+  };
+
+  handleChange = e => {
+    this.setState({ name: e.target.value });
+  };
+
+  render() {
     return (
       <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
         <div class="rounded overflow-hidden mb-4 shadow-sm bg-light">
           <div className="d-flex align-items-start flex-column justify-content-between h-196 p-3">
             <div className="d-flex w-100">
               <h6 className="mr-auto">
-                <small className="text-muted">#{this.props.idx + 1}</small> {this.props.name}
+                <small className="text-muted">#{this.props.idx + 1} </small>
+                {this.state.editing ? (
+                  <input
+                    ref={this.input}
+                    name="name"
+                    type="text"
+                    value={this.state.name}
+                    className="h6 text-dark title-input"
+                    onChange={this.handleChange}
+                    onKeyDown={this.handleKeyDown}
+                    onBlur={() => this.setState({ editing: false })}
+                  />
+                ) : (
+                  <span onClick={this.handleTitleEdit} className="h6">
+                    {this.props.name}
+                  </span>
+                )}
               </h6>
+
               <i className="fas fa-trash text-danger mt-1 cursor" style={{ fontSize: 12 }} />
             </div>
 
-            <h3 className="align-self-center">
-              {hours}:{minutes}:{seconds}
-            </h3>
+            <Timer time={this.props.time} />
 
             <div className="w-100">
               <button type="button" className="btn btn-secondary btn-block text-left">

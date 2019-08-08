@@ -104,6 +104,22 @@ nav {
   animation: anim infinite 1.5s linear;
 }
 
+.timer-input {
+  height: 40px;
+  width: 32px;
+  border: 0;
+  margin: 0;
+  padding: 4;
+}
+
+.title-input {
+  height: 19px;
+  width: 70%;
+  border: 0;
+  margin: 0;
+  padding: 4;
+}
+
 @keyframes anim {
   0% {
     opacity: 0;
