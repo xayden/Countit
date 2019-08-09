@@ -81,11 +81,11 @@ class App extends React.Component {
   };
 
   pausePlaying = () => {
-    this.setState(prevState => ({ currentPlayingTimer: '', puasedTimer: prevState.currentPlayingTimer }));
+    this.setState(prevState => ({ currentPlayingTimer: '', pausedTimer: prevState.currentPlayingTimer }));
   };
 
   resumePlaying = () => {
-    this.setState(prevState => ({ currentPlayingTimer: prevState.puasedTimer, puasedTimer: '' }));
+    this.setState(prevState => ({ currentPlayingTimer: prevState.pausedTimer, pausedTimer: '' }));
   };
 
   switchPlayState = () => {
@@ -137,6 +137,7 @@ class App extends React.Component {
               <Timer
                 _id={t._id}
                 time={t.time}
+                pausedTimer={this.state.pausedTimer}
                 currentPlayingTimer={this.state.currentPlayingTimer}
                 pauseWastedTimer={this.pauseWastedTimer}
                 resumeWastedTimer={this.resumeWastedTimer}
