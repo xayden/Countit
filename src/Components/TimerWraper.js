@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Timer from './Timer';
 
 export default class TimerWraper extends Component {
   constructor(props) {
@@ -15,8 +14,7 @@ export default class TimerWraper extends Component {
 
   componentWillMount() {
     this.setState({
-      alarm: this.props.alarm,
-      time: parseInt(this.props.time)
+      alarm: this.props.alarm
     });
   }
 
@@ -48,7 +46,7 @@ export default class TimerWraper extends Component {
 
   render() {
     return (
-      <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+      <div class="col-12 col-sm-4 col-lg-3 col-xl-2">
         <div class="rounded overflow-hidden mb-4 shadow-sm bg-light">
           <div className="d-flex align-items-start flex-column justify-content-between h-196 p-3">
             <div className="d-flex w-100">
@@ -60,7 +58,7 @@ export default class TimerWraper extends Component {
                     name="name"
                     type="text"
                     value={this.state.name}
-                    className="h6 text-dark title-input"
+                    className="text-dark title-input"
                     onChange={this.handleChange}
                     onKeyDown={this.handleKeyDown}
                     onBlur={() => this.setState({ editing: false })}
@@ -75,7 +73,7 @@ export default class TimerWraper extends Component {
               <i className="fas fa-trash text-danger mt-1 cursor" style={{ fontSize: 12 }} />
             </div>
 
-            <Timer time={this.props.time} />
+            {this.props.children}
 
             <div className="w-100">
               <button type="button" className="btn btn-secondary btn-block text-left">

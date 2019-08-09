@@ -2,8 +2,13 @@ import React from 'react';
 
 import Container from './Components/Container';
 import Row from './Components/Row';
-import TimerWraper from './Components/TimerWraper';
+
 import Controlls from './Components/Controlls';
+import Rounds from './Components/Rounds';
+import WastedTime from './Components/WastedTime';
+
+import TimerWraper from './Components/TimerWraper';
+import Timer from './Components/Timer';
 import NewTimer from './Components/NewTimer';
 
 import * as notification from './notification';
@@ -30,7 +35,7 @@ class App extends React.Component {
 
       // timer related
       isPlaying: false,
-      currentPlayingTimer: '',
+      currentPlayingTimer: 's9wa8s5',
       pausedTimer: '',
       finishedTimer: '',
 
@@ -68,16 +73,75 @@ class App extends React.Component {
     this.setState({ isAdding: false });
   };
 
+  // Timers states
+  startPlaying = () => {
+    if (this.state.timers[0]) {
+      this.setState({ isPlaying: true, currentPlayingTimer: this.state.timers[0]._id });
+    }
+  };
+
+  pausePlaying = () => {
+    this.setState(prevState => ({ currentPlayingTimer: '', puasedTimer: prevState.currentPlayingTimer }));
+  };
+
+  resumePlaying = () => {
+    this.setState(prevState => ({ currentPlayingTimer: prevState.puasedTimer, puasedTimer: '' }));
+  };
+
+  switchPlayState = () => {
+    if (this.state.currentPlayingTimer) {
+      this.pausePlaying();
+    } else {
+      this.resumePlaying();
+    }
+  };
+
+  // Wasted Time
+  pauseWastedTimer = () => {
+    // clearInterval(this.wastedTime);
+    // delete this.wastedTime;
+    // this.setState({ isWastedTimePaused: true });
+  };
+
+  resumeWastedTimer = () => {
+    // clearInterval(this.wastedTime);
+    // delete this.wastedTime;
+    // this.setState({ isWastedTimePaused: true });
+  };
+
+  loadLocalStorage = () => {
+    return JSON.parse(localStorage.getItem('timers'));
+  };
+
+  updateLocalStorage = () => {
+    localStorage.setItem('timers', JSON.stringify(this.state.timers));
+  };
+
   render() {
     return (
       <Container>
         <Row>
-          <Controlls />
+          <Controlls
+            isPlaying={this.state.isPlaying}
+            startPlaying={this.startPlaying}
+            switchPlayState={this.switchPlayState}
+            currentPlayingTimer={this.state.currentPlayingTimer}
+          />
+          <Rounds />
+          <WastedTime />
         </Row>
 
         <Row>
           {this.state.timers.map((t, i) => (
-            <TimerWraper key={t._id} _id={t._id} idx={i} name={t.name} time={t.time} alarm={t.alarm} />
+            <TimerWraper key={t._id} idx={i} name={t.name} alarm={t.alarm}>
+              <Timer
+                _id={t._id}
+                time={t.time}
+                currentPlayingTimer={this.state.currentPlayingTimer}
+                pauseWastedTimer={this.pauseWastedTimer}
+                resumeWastedTimer={this.resumeWastedTimer}
+              />
+            </TimerWraper>
           ))}
           <NewTimer
             isAdding={this.state.isAdding}
