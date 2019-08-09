@@ -5,7 +5,7 @@ export default class TimerWraper extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alarmName: 'default',
+      alarm: 'default',
       time: 0,
       editing: false,
       name: ''
@@ -15,7 +15,7 @@ export default class TimerWraper extends Component {
 
   componentWillMount() {
     this.setState({
-      alarmName: this.props.alarmName,
+      alarm: this.props.alarm,
       time: parseInt(this.props.time)
     });
   }
@@ -83,7 +83,7 @@ export default class TimerWraper extends Component {
               </button>
               <span className="text-muted">
                 <small>
-                  Alarm: <strong>{this.state.alarmName}</strong>
+                  Alarm: <strong>{this.state.alarm}</strong>
                 </small>
               </span>
             </div>

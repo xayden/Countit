@@ -4,6 +4,7 @@ import Container from './Components/Container';
 import Row from './Components/Row';
 import TimerWraper from './Components/TimerWraper';
 import Controlls from './Components/Controlls';
+import NewTimer from './Components/NewTimer';
 
 import * as notification from './notification';
 
@@ -15,17 +16,17 @@ class App extends React.Component {
         {
           _id: '#5s8ea',
           name: 'Work',
-          time: 800000,
-          alarmName: 'default'
+          time: 8000000,
+          alarm: 'default'
         },
         {
           _id: '#s9wa8s5',
           name: 'Rest',
           time: 1500000,
-          alarmName: 'default'
+          alarm: 'default'
         }
       ],
-      notificationsEnables: false,
+      notificationsEnabled: false,
 
       // timer related
       isPlaying: false,
@@ -42,7 +43,6 @@ class App extends React.Component {
 
       // new timer
       isAdding: false,
-      name: '',
 
       // rounds
       rounds: 0
@@ -54,6 +54,20 @@ class App extends React.Component {
     notification.sendNotification('Title', 'Message');
   };
 
+  handleAddTimerClick = () => {
+    this.setState({ isAdding: true });
+  };
+
+  addTimer = name => {
+    const newTimers = [...this.state.timers, { name, _id: '123', time: 0, alarm: 'default' }];
+    this.setState({ timers: newTimers });
+    this.setState({ name: '', isAdding: false });
+  };
+
+  cancelNewTimer = () => {
+    this.setState({ isAdding: false });
+  };
+
   render() {
     return (
       <Container>
@@ -63,15 +77,14 @@ class App extends React.Component {
 
         <Row>
           {this.state.timers.map((t, i) => (
-            <TimerWraper
-              key={t._id}
-              _id={t._id}
-              idx={i}
-              name={t.name}
-              time={t.time}
-              alarmName={t.alarmName}
-            />
+            <TimerWraper key={t._id} _id={t._id} idx={i} name={t.name} time={t.time} alarm={t.alarm} />
           ))}
+          <NewTimer
+            isAdding={this.state.isAdding}
+            handleAddTimerClick={this.handleAddTimerClick}
+            addTimer={this.addTimer}
+            cancelNewTimer={this.cancelNewTimer}
+          />
         </Row>
       </Container>
     );
