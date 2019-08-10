@@ -61,9 +61,13 @@ class App extends React.Component {
     this.setState({ timers: this.loadLocalStorage() || [] });
   }
 
+  // Notifications
   requestNotificationPermission = () => {
     notification.requestPermission();
-    notification.sendNotification('Title', 'Message');
+  };
+
+  sendNotification = (title, message) => {
+    notification.sendNotification(title, message);
   };
 
   handleAddTimerClick = () => {
@@ -158,6 +162,7 @@ class App extends React.Component {
       finishedTimer: prevState.currentPlayingTimer
     }));
 
+    this.sendNotification('Time up!', `${finishedTimer.name} count down has finished.`);
     this.playAudio();
   };
 
