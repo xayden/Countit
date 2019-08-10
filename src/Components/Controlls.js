@@ -1,6 +1,29 @@
 import React, { Component } from 'react';
 
+import * as utils from '../utils';
+
 export default class Controlls extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { alarm: '' };
+
+    this.audio = React.createRef();
+    this.audioInput = React.createRef();
+  }
+
+  componentWillMount() {}
+
+  handleAudioInputClick = () => {
+    this.audioInput.current.click();
+  };
+
+  handleAudioChange = () => {
+    if (this.audioInput.current.value) {
+      this.audio.current.src = URL.createObjectURL(this.audioInput.current.files[0]);
+      this.setState({ alarm: utils.truncate(this.audioInput.current.files[0].name, 25) });
+    }
+  };
+
   render() {
     return (
       <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2">
@@ -8,30 +31,30 @@ export default class Controlls extends Component {
           <div className="col p-3 d-flex flex-column position-static">
             <h5 className="">Controlls</h5>
             {/* <div className="row no-gutters"> */}
-              {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
-                {this.props.isPlaying ? (
-                  <button className="btn btn-success btn-block" onClick={this.props.switchPlayState}>
-                    {this.props.currentPlayingTimer ? (
-                      <React.Fragment>
-                        <i class="fas fa-pause mr-1" /> PAUSE
-                      </React.Fragment>
-                    ) : (
-                      <React.Fragment>
-                        <i className="fas fa-play mr-1" /> RESUME
-                      </React.Fragment>
-                    )}
-                  </button>
+            {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
+            {this.props.isPlaying ? (
+              <button className="btn btn-success btn-block" onClick={this.props.switchPlayState}>
+                {this.props.currentPlayingTimer ? (
+                  <React.Fragment>
+                    <i class="fas fa-pause mr-1" /> PAUSE
+                  </React.Fragment>
                 ) : (
-                  <button className="btn btn-success btn-block" onClick={this.props.startPlaying}>
-                    <i className="fas fa-play mr-1" /> START
-                  </button>
+                  <React.Fragment>
+                    <i className="fas fa-play mr-1" /> RESUME
+                  </React.Fragment>
                 )}
-              {/* </div> */}
-              {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
-                <button className="btn btn-danger btn-block" id="reset">
-                  <i className="fas fa-skull-crossbones mr-1" /> RESET
-                </button>
-              {/* </div> */}
+              </button>
+            ) : (
+              <button className="btn btn-success btn-block" onClick={this.props.startPlaying}>
+                <i className="fas fa-play mr-1" /> START
+              </button>
+            )}
+            {/* </div> */}
+            {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
+            <button className="btn btn-danger btn-block" id="reset">
+              <i className="fas fa-skull-crossbones mr-1" /> RESET
+            </button>
+            {/* </div> */}
             {/* </div> */}
 
             <div className="mt-2">
@@ -42,13 +65,20 @@ export default class Controlls extends Component {
                 </label>
               </div>
 
-              <input type="file" name="alarm" hidden="hidden" />
-              <button type="button" className="btn btn-secondary btn-block text-left">
+              {/* Default audio */}
+              <input type="file" ref={this.audioInput} onChange={this.handleAudioChange} hidden />
+              <audio id="audio_default" ref={this.audio} loop />
+
+              <button
+                type="button"
+                className="btn btn-secondary btn-block text-left"
+                onClick={this.handleAudioInputClick}
+              >
                 <i className="fas fa-upload mb-1 mr-1" /> Change alarm
               </button>
               <span className="text-muted">
                 <small>
-                  Default Alarm: <strong>Stars</strong>
+                  Default Alarm: <strong>{this.state.alarm || 'Stars'}</strong>
                 </small>
               </span>
             </div>
