@@ -1,5 +1,7 @@
 import React from 'react';
 
+import shortid from 'shortid';
+
 import Container from './Components/Container';
 import Row from './Components/Row';
 
