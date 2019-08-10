@@ -7,8 +7,8 @@ export default class Controlls extends Component {
         <div class="row no-gutters rounded mb-3 shadow-sm bg-light">
           <div className="col p-3 d-flex flex-column position-static">
             <h5 className="">Controlls</h5>
-            <div className="row no-gutters">
-              <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1">
+            {/* <div className="row no-gutters"> */}
+              {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
                 {this.props.isPlaying ? (
                   <button className="btn btn-success btn-block" onClick={this.props.switchPlayState}>
                     {this.props.currentPlayingTimer ? (
@@ -26,13 +26,13 @@ export default class Controlls extends Component {
                     <i className="fas fa-play mr-1" /> START
                   </button>
                 )}
-              </div>
-              <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1">
+              {/* </div> */}
+              {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
                 <button className="btn btn-danger btn-block" id="reset">
                   <i className="fas fa-skull-crossbones mr-1" /> RESET
                 </button>
-              </div>
-            </div>
+              {/* </div> */}
+            {/* </div> */}
 
             <div className="mt-2">
               <div className="form-check">
