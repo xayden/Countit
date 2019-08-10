@@ -123,6 +123,28 @@ class App extends React.Component {
     }
   };
 
+  startNextTimer = () => {
+    const nextTimerIdx = this.state.timers.findIndex(t => t._id === this.state.finishedTimer) + 1;
+    let updatedState = {};
+
+    if (nextTimerIdx < this.state.timers.length) {
+      updatedState = {
+        currentPlayingTimer: this.state.timers[nextTimerIdx]._id,
+        puasedTimer: '',
+        finishedTimer: ''
+      };
+    } else if (this.state.timers[0]) {
+      updatedState = {
+        currentPlayingTimer: this.state.timers[0]._id,
+        puasedTimer: '',
+        finishedTimer: '',
+        rounds: this.state.rounds + 1
+      };
+    }
+
+    this.setState({ ...updatedState, audioTimer: 40000 });
+  };
+
   onTimerFinish = () => {
     this.setState(prevState => ({
       currentPlayingTimer: '',
@@ -161,7 +183,7 @@ class App extends React.Component {
     return (
       <Container>
         <Row>
-          <SuccessAlert show={this.state.finishedTimer !== ''} />
+          <SuccessAlert show={this.state.finishedTimer !== ''} playNextTimer={this.startNextTimer} />
           <Controlls
             isPlaying={this.state.isPlaying}
             startPlaying={this.startPlaying}
