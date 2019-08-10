@@ -23,6 +23,7 @@ export default class NewTimer extends Component {
 
   handleAddNewTimer = () => {
     if (this.state.name) {
+      this.setState({ name: '' });
       this.props.addTimer(this.state.name);
     }
   };
