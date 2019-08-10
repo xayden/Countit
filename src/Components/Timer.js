@@ -13,6 +13,8 @@ export default class Timer extends Component {
       currentTime: this.props.time,
       editing: ''
     };
+
+    this.keys = { ESC: 27, ENTER: 13 };
   }
 
   start = () => {
@@ -72,6 +74,14 @@ export default class Timer extends Component {
 
     const updatedTimer = { ...this.props.timer, time: ms };
     this.props.onUpdate(updatedTimer);
+  };
+
+  handleKeyDown = e => {
+    if (e.which === this.keys.ESC) {
+      this.setState({ editing: '' });
+    } else if (e.which === this.keys.ENTER) {
+      this.handleSaveEdit();
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
