@@ -97,16 +97,21 @@ class App extends React.Component {
   };
 
   // Wasted Time
+  startWastedTimer = () => {
+    this.wastedTime = setInterval(() => {
+      this.setState(prevState => ({ wastedTime: prevState.wastedTime + 1000 }));
+    }, 1000);
+  };
+
   pauseWastedTimer = () => {
-    // clearInterval(this.wastedTime);
-    // delete this.wastedTime;
-    // this.setState({ isWastedTimePaused: true });
+    clearInterval(this.wastedTime);
+    delete this.wastedTime;
+    this.setState({ isWastedTimePaused: true });
   };
 
   resumeWastedTimer = () => {
-    // clearInterval(this.wastedTime);
-    // delete this.wastedTime;
-    // this.setState({ isWastedTimePaused: true });
+    if (!this.wastedTime) this.startWastedTimer();
+    this.setState({ isWastedTimePaused: false });
   };
 
   loadLocalStorage = () => {
@@ -128,7 +133,7 @@ class App extends React.Component {
             currentPlayingTimer={this.state.currentPlayingTimer}
           />
           <Rounds />
-          <WastedTime />
+          <WastedTime time={this.state.wastedTime} />
         </Row>
 
         <Row>
