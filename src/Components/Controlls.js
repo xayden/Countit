@@ -11,8 +11,6 @@ export default class Controlls extends Component {
     this.audioInput = React.createRef();
   }
 
-  componentWillMount() {}
-
   handleAudioInputClick = () => {
     this.audioInput.current.click();
   };
@@ -67,7 +65,12 @@ export default class Controlls extends Component {
 
               {/* Default audio */}
               <input type="file" ref={this.audioInput} onChange={this.handleAudioChange} hidden />
-              <audio id="audio_default" ref={this.audio} loop />
+              <audio
+                id="audio_default"
+                ref={this.audio}
+                src={`${process.env.PUBLIC_URL}/alarms/count_the_stars.mp3`}
+                loop
+              />
 
               <button
                 type="button"
@@ -78,7 +81,7 @@ export default class Controlls extends Component {
               </button>
               <span className="text-muted">
                 <small>
-                  Default Alarm: <strong>{this.state.alarm || 'Stars'}</strong>
+                  Default Alarm: <strong>{this.state.alarm || 'Count The Stars'}</strong>
                 </small>
               </span>
             </div>
