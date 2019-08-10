@@ -143,14 +143,22 @@ class App extends React.Component {
     }
 
     this.setState({ ...updatedState, audioTimer: 40000 });
+    this.stopAudio();
   };
 
   onTimerFinish = () => {
+    const finishedTimer = this.state.timers.find(t => t._id === this.state.currentPlayingTimer);
+    const timerAudio = document.getElementById('audio_' + finishedTimer._id);
+    if (timerAudio.src) this.audio = timerAudio;
+    else this.audio = document.getElementById('audio_default');
+
     this.setState(prevState => ({
       currentPlayingTimer: '',
       pausedTimer: '',
       finishedTimer: prevState.currentPlayingTimer
     }));
+
+    this.playAudio();
   };
 
   // Wasted Time
@@ -171,6 +179,27 @@ class App extends React.Component {
     this.setState({ isWastedTimePaused: false });
   };
 
+  // Audio operations
+  playAudio = () => {
+    this.audio.play();
+    this.audioTime = setInterval(() => {
+      if (this.state.audioTimer <= 0) {
+        this._stopAudio();
+      } else {
+        this.setState(prevState => ({ audioTimer: prevState.audioTimer - 1000 }));
+      }
+    }, 1000);
+  };
+
+  stopAudio = () => {
+    if (this.audioTime) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      clearInterval(this.audioTime);
+    }
+  };
+
+  // localStorage operations
   loadLocalStorage = () => {
     return JSON.parse(localStorage.getItem('timers'));
   };
@@ -190,7 +219,7 @@ class App extends React.Component {
             switchPlayState={this.switchPlayState}
             currentPlayingTimer={this.state.currentPlayingTimer}
           />
-          <Rounds />
+          <Rounds rounds={this.state.rounds} />
           <WastedTime time={this.state.wastedTime} />
         </Row>
 

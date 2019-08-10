@@ -6,7 +6,7 @@ export default function Rounds(props) {
       <div className="rounded overflow-hidden mb-4 shadow-sm bg-light h-150">
         <div className="col p-3 d-flex flex-column position-static text-center">
           <h5 className="mt-n3">Rounds</h5>
-          <h3 className="mt-4">1</h3>
+          <h3 className="mt-4">{props.rounds}</h3>
         </div>
       </div>
     </div>
