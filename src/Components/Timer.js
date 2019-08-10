@@ -69,6 +69,9 @@ export default class Timer extends Component {
     const { hours, minutes, seconds } = this.humanReadableTime(ms);
 
     this.setState({ currentTime: ms, editing: '', hours, minutes, seconds });
+
+    const updatedTimer = { ...this.props.timer, time: ms };
+    this.props.onUpdate(updatedTimer);
   };
 
   componentDidUpdate(prevProps, prevState) {

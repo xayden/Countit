@@ -18,18 +18,18 @@ class App extends React.Component {
     super(props);
     this.state = {
       timers: [
-        {
-          _id: '#5s8ea',
-          name: 'Work',
-          time: 8000000,
-          alarm: 'default'
-        },
-        {
-          _id: '#s9wa8s5',
-          name: 'Rest',
-          time: 1500000,
-          alarm: 'default'
-        }
+        // {
+        //   _id: '#5s8ea',
+        //   name: 'Work',
+        //   time: 8000000,
+        //   alarm: 'default'
+        // },
+        // {
+        //   _id: '#s9wa8s5',
+        //   name: 'Rest',
+        //   time: 1500000,
+        //   alarm: 'default'
+        // }
       ],
       notificationsEnabled: false,
 
@@ -54,6 +54,10 @@ class App extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.setState({ timers: this.loadLocalStorage() || [] });
+  }
+
   requestNotificationPermission = () => {
     notification.requestPermission();
     notification.sendNotification('Title', 'Message');
@@ -64,13 +68,33 @@ class App extends React.Component {
   };
 
   addTimer = name => {
-    const newTimers = [...this.state.timers, { name, _id: '123', time: 0, alarm: 'default' }];
-    this.setState({ timers: newTimers });
-    this.setState({ name: '', isAdding: false });
+    const newTimers = [...this.state.timers, { name, _id: shortid.generate(), time: 0, alarm: 'default' }];
+    this.setState({ timers: newTimers, name: '', isAdding: false });
+    this.updateLocalStorage(newTimers);
   };
 
   cancelNewTimer = () => {
     this.setState({ isAdding: false });
+  };
+
+  updateTimer = newTimer => {
+    const oldTimerIdx = this.state.timers.findIndex(t => t._id === newTimer._id);
+    const updatedTimers = [
+      ...this.state.timers.slice(0, oldTimerIdx),
+      newTimer,
+      ...this.state.timers.slice(oldTimerIdx + 1)
+    ];
+
+    this.setState({ timers: updatedTimers });
+    this.updateLocalStorage(updatedTimers);
+  };
+
+  deleteTimer = _id => {
+    const timerIdx = this.state.timers.findIndex(t => t._id === _id);
+    const updatedTimers = [...this.state.timers.slice(0, timerIdx), ...this.state.timers.slice(timerIdx + 1)];
+
+    this.setState({ timers: updatedTimers });
+    this.updateLocalStorage(updatedTimers);
   };
 
   // Timers states
@@ -118,8 +142,8 @@ class App extends React.Component {
     return JSON.parse(localStorage.getItem('timers'));
   };
 
-  updateLocalStorage = () => {
-    localStorage.setItem('timers', JSON.stringify(this.state.timers));
+  updateLocalStorage = timers => {
+    localStorage.setItem('timers', JSON.stringify(timers));
   };
 
   render() {
@@ -138,10 +162,18 @@ class App extends React.Component {
 
         <Row>
           {this.state.timers.map((t, i) => (
-            <TimerWraper key={t._id} idx={i} name={t.name} alarm={t.alarm}>
+            <TimerWraper
+              key={t._id}
+              idx={i}
+              timer={t}
+              onUpdate={this.updateTimer}
+              onDelete={this.deleteTimer}
+            >
               <Timer
                 _id={t._id}
                 time={t.time}
+                timer={t}
+                onUpdate={this.updateTimer}
                 pausedTimer={this.state.pausedTimer}
                 currentPlayingTimer={this.state.currentPlayingTimer}
                 pauseWastedTimer={this.pauseWastedTimer}

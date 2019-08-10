@@ -9,12 +9,15 @@ export default class TimerWraper extends Component {
       editing: false,
       name: ''
     };
+
     this.input = React.createRef();
+    this.keys = { ESC: 27, ENTER: 13 };
   }
 
   componentWillMount() {
     this.setState({
-      alarm: this.props.alarm
+      name: this.props.timer.name,
+      alarm: this.props.timer.alarm
     });
   }
 
@@ -37,11 +40,25 @@ export default class TimerWraper extends Component {
   }
 
   handleTitleEdit = () => {
-    this.setState({ editing: true, name: this.props.name });
+    this.setState({ editing: true });
   };
 
   handleChange = e => {
     this.setState({ name: e.target.value });
+  };
+
+  saveEdit = () => {
+    const updatedTimer = { ...this.props.timer, name: this.state.name };
+    this.setState({ editing: false });
+    this.props.onUpdate(updatedTimer);
+  };
+
+  handleKeyDown = e => {
+    if (e.which === this.keys.ESC) {
+      this.setState({ editing: false, name: this.props.timer.name });
+    } else if (e.which === this.keys.ENTER) {
+      this.saveEdit();
+    }
   };
 
   render() {
@@ -61,16 +78,20 @@ export default class TimerWraper extends Component {
                     className="text-dark title-input"
                     onChange={this.handleChange}
                     onKeyDown={this.handleKeyDown}
-                    onBlur={() => this.setState({ editing: false })}
+                    onBlur={this.saveEdit}
                   />
                 ) : (
                   <span onClick={this.handleTitleEdit} className="h6">
-                    {this.props.name}
+                    {this.props.timer.name}
                   </span>
                 )}
               </h6>
 
-              <i className="fas fa-trash text-danger mt-1 cursor" style={{ fontSize: 12 }} />
+              <i
+                className="fas fa-trash text-danger mt-1 cursor"
+                style={{ fontSize: 12 }}
+                onClick={() => this.props.onDelete(this.props.timer._id)}
+              />
             </div>
 
             {this.props.children}
