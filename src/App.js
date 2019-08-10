@@ -8,6 +8,7 @@ import Row from './Components/Row';
 import Controlls from './Components/Controlls';
 import Rounds from './Components/Rounds';
 import WastedTime from './Components/WastedTime';
+import SuccessAlert from './Components/SuccessAlert';
 
 import TimerWraper from './Components/TimerWraper';
 import Timer from './Components/Timer';
@@ -122,6 +123,14 @@ class App extends React.Component {
     }
   };
 
+  onTimerFinish = () => {
+    this.setState(prevState => ({
+      currentPlayingTimer: '',
+      pausedTimer: '',
+      finishedTimer: prevState.currentPlayingTimer
+    }));
+  };
+
   // Wasted Time
   startWastedTimer = () => {
     this.wastedTime = setInterval(() => {
@@ -152,6 +161,7 @@ class App extends React.Component {
     return (
       <Container>
         <Row>
+          <SuccessAlert show={this.state.finishedTimer !== ''} />
           <Controlls
             isPlaying={this.state.isPlaying}
             startPlaying={this.startPlaying}
@@ -175,6 +185,7 @@ class App extends React.Component {
                 _id={t._id}
                 time={t.time}
                 timer={t}
+                onFinish={this.onTimerFinish}
                 onUpdate={this.updateTimer}
                 pausedTimer={this.state.pausedTimer}
                 currentPlayingTimer={this.state.currentPlayingTimer}

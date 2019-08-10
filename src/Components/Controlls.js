@@ -24,8 +24,8 @@ export default class Controlls extends Component {
 
   render() {
     return (
-      <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2">
-        <div class="row no-gutters rounded mb-3 shadow-sm bg-light">
+      <div className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2">
+        <div className="row no-gutters rounded mb-3 shadow-sm bg-light">
           <div className="col p-3 d-flex flex-column position-static">
             <h5 className="">Controlls</h5>
             {/* <div className="row no-gutters"> */}
@@ -34,7 +34,7 @@ export default class Controlls extends Component {
               <button className="btn btn-success btn-block" onClick={this.props.switchPlayState}>
                 {this.props.currentPlayingTimer ? (
                   <React.Fragment>
-                    <i class="fas fa-pause mr-1" /> PAUSE
+                    <i className="fas fa-pause mr-1" /> PAUSE
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
@@ -58,7 +58,7 @@ export default class Controlls extends Component {
             <div className="mt-2">
               <div className="form-check">
                 <input className="form-check-input" type="checkbox" id="notificationCheck" />
-                <label className="form-check-label" style={{ fontSize: 14 }} for="notificationCheck">
+                <label className="form-check-label" style={{ fontSize: 14 }} htmlFor="notificationCheck">
                   Notifications
                 </label>
               </div>

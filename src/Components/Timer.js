@@ -21,7 +21,7 @@ export default class Timer extends Component {
     this.timer = setInterval(() => {
       this.setState(prevState => {
         if (prevState.currentTime <= 0) {
-          this.props.onTimerFinish(); // react throws an error in the console for this!
+          this.props.onFinish(); // react throws an error in the console for this!
           this.setState({ currentTime: this.props.time });
           return this.pause();
         } else {
@@ -55,7 +55,7 @@ export default class Timer extends Component {
 
   handleChange = e => {
     const { name, value } = e.target;
-    if (value.length < 3 && (Number(value) || value === '')) {
+    if (value.length <= 2 && (typeof Number(value) === 'number' || value === '')) {
       this.setState({ [name]: value });
     }
   };
