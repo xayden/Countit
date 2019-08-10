@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import * as utils from '../utils';
+
 export default class TimerWraper extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +13,9 @@ export default class TimerWraper extends Component {
     };
 
     this.input = React.createRef();
+    this.audio = React.createRef();
+    this.audioInput = React.createRef();
+
     this.keys = { ESC: 27, ENTER: 13 };
   }
 
@@ -61,6 +66,18 @@ export default class TimerWraper extends Component {
     }
   };
 
+  // Audio handling
+  handleAudioInputClick = () => {
+    this.audioInput.current.click();
+  };
+
+  handleAudioChange = () => {
+    if (this.audioInput.current.value) {
+      this.audio.current.src = URL.createObjectURL(this.audioInput.current.files[0]);
+      this.setState({ alarm: utils.truncate(this.audioInput.current.files[0].name, 35) });
+    }
+  };
+
   render() {
     return (
       <div class="col-12 col-sm-4 col-lg-3 col-xl-2">
@@ -97,7 +114,14 @@ export default class TimerWraper extends Component {
             {this.props.children}
 
             <div className="w-100">
-              <button type="button" className="btn btn-secondary btn-block text-left">
+              <input type="file" ref={this.audioInput} onChange={this.handleAudioChange} hidden />
+              <audio id={'audio_' + this.props.timer._id} ref={this.audio} loop />
+
+              <button
+                type="button"
+                className="btn btn-secondary btn-block text-left"
+                onClick={this.handleAudioInputClick}
+              >
                 <i className="fas fa-upload mb-1 mr-1" /> Custom alarm
               </button>
               <span className="text-muted">
