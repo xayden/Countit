@@ -104,9 +104,14 @@ export default class Timer extends Component {
 
   render() {
     const { hours, minutes, seconds } = this.humanReadableTime(this.state.currentTime);
+
     let timerStyle = 'align-self-center';
     this.props.currentPlayingTimer === this.props._id && (timerStyle += ' text-warning');
     this.props.pausedTimer === this.props._id && (timerStyle += ' text-warning paused');
+
+    if (this.props.timer._id === this.props.currentPlayingTimer) {
+      document.title = `${hours}:${minutes}:${seconds}`;
+    }
 
     return (
       <h3 className={timerStyle}>
