@@ -5,11 +5,29 @@ import * as utils from '../utils';
 export default class Controlls extends Component {
   constructor(props) {
     super(props);
-    this.state = { alarm: '' };
+    this.state = { alarm: '', isConfirming: false, confirmationTime: 3000 };
 
     this.audio = React.createRef();
     this.audioInput = React.createRef();
   }
+
+  confirm = () => {
+    this.setState({ isConfirming: true });
+
+    this.confirmTime = setInterval(() => {
+      if (this.state.confirmationTime <= 0) {
+        this.setState({ isConfirming: false, confirmationTime: 3000 });
+      } else {
+        this.setState(prevState => ({ confirmationTime: prevState.confirmationTime - 1000 }));
+      }
+    }, 1000);
+  };
+
+  handleReset = () => {
+    this.setState({ isConfirming: false, confirmationTime: 3000 });
+    clearInterval(this.confirmTime);
+    this.props.onReset();
+  };
 
   handleInputChange = async e => {
     const value = e.target.checked;
@@ -54,10 +72,23 @@ export default class Controlls extends Component {
                 <i className="fas fa-play mr-1" /> START
               </button>
             )}
-            <button className="btn btn-danger btn-block" id="reset" onClick={this.props.onReset}>
-              <i className="fas fa-skull-crossbones mr-1" />
-              RESET
-            </button>
+
+            {this.state.isConfirming ? (
+              <button
+                className="btn btn-danger btn-block py-2"
+                id="reset"
+                onClick={this.handleReset}
+                style={{ fontSize: 10 }}
+              >
+                <i className="fas fa-exclamation-circle mr-1" />
+                CLICK AGAIN TO CONFIRM
+              </button>
+            ) : (
+              <button className="btn btn-danger btn-block" id="reset" onClick={this.confirm}>
+                <i className="fas fa-skull-crossbones mr-1" />
+                RESET
+              </button>
+            )}
 
             <div className="mt-2">
               <div className="form-check">
