@@ -41,6 +41,7 @@ class App extends React.Component {
       currentPlayingTimer: 's9wa8s5',
       pausedTimer: '',
       finishedTimer: '',
+      afterDeletedTimer: '',
 
       // wasted time
       wastedTime: 0,
@@ -75,6 +76,7 @@ class App extends React.Component {
     notification.sendNotification(title, message);
   };
 
+  // Timer related stuff
   handleAddTimerClick = () => {
     this.setState({ isAdding: true });
   };
@@ -105,7 +107,32 @@ class App extends React.Component {
     const timerIdx = this.state.timers.findIndex(t => t._id === _id);
     const updatedTimers = [...this.state.timers.slice(0, timerIdx), ...this.state.timers.slice(timerIdx + 1)];
 
-    this.setState({ timers: updatedTimers });
+    let newState = {};
+    if (
+      this.state.timers[timerIdx]._id === this.state.pausedTimer ||
+      this.state.timers[timerIdx]._id === this.state.currentPlayingTimer
+    ) {
+      if (updatedTimers[timerIdx] || updatedTimers[0]) {
+        newState = {
+          afterDeletedTimer:
+            (updatedTimers[timerIdx] && updatedTimers[timerIdx]._id) ||
+            (updatedTimers[0] && updatedTimers[0]._id) ||
+            '',
+          currentPlayingTimer: '',
+          pausedTimer: ''
+        };
+      } else {
+        newState = {
+          isPlaying: false,
+          afterDeletedTimer: '',
+          currentPlayingTimer: '',
+          pausedTimer: ''
+        };
+      }
+      this.resumeWastedTimer();
+    }
+
+    this.setState({ timers: updatedTimers, ...newState });
     this.updateLocalStorage(updatedTimers);
   };
 
@@ -121,7 +148,13 @@ class App extends React.Component {
   };
 
   resumePlaying = () => {
-    this.setState(prevState => ({ currentPlayingTimer: prevState.pausedTimer, pausedTimer: '' }));
+    this.setState(prevState => {
+      if (prevState.pausedTimer && this.state.timers.findIndex(t => t._id === prevState.pausedTimer) !== -1) {
+        return { currentPlayingTimer: prevState.pausedTimer, pausedTimer: '' };
+      } else {
+        return { currentPlayingTimer: prevState.afterDeletedTimer, afterDeletedTimer: '' };
+      }
+    });
   };
 
   switchPlayState = () => {
@@ -133,19 +166,23 @@ class App extends React.Component {
   };
 
   startNextTimer = () => {
-    const nextTimerIdx = this.state.timers.findIndex(t => t._id === this.state.finishedTimer) + 1;
     let updatedState = {};
+
+    let nextTimerIdx = this.state.timers.findIndex(t => t._id === this.state.finishedTimer) + 1;
+    if (!nextTimerIdx) {
+      nextTimerIdx = this.state.timers.findIndex(t => t._id === this.state.afterDeletedTimer) + 1;
+    }
 
     if (nextTimerIdx < this.state.timers.length) {
       updatedState = {
         currentPlayingTimer: this.state.timers[nextTimerIdx]._id,
-        puasedTimer: '',
+        pausedTimer: '',
         finishedTimer: ''
       };
     } else if (this.state.timers[0]) {
       updatedState = {
         currentPlayingTimer: this.state.timers[0]._id,
-        puasedTimer: '',
+        pausedTimer: '',
         finishedTimer: '',
         rounds: this.state.rounds + 1
       };
@@ -158,6 +195,7 @@ class App extends React.Component {
   onTimerFinish = () => {
     const finishedTimer = this.state.timers.find(t => t._id === this.state.currentPlayingTimer);
     const timerAudio = document.getElementById('audio_' + finishedTimer._id);
+
     if (timerAudio.src) this.audio = timerAudio;
     else this.audio = document.getElementById('audio_default');
 
