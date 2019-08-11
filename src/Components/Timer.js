@@ -84,6 +84,12 @@ export default class Timer extends Component {
     }
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isPlaying) {
+      this.setState({ currentTime: this.props.time });
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (!prevState.editing && this.state.editing) {
       const node = document.getElementById(this.state.editing);

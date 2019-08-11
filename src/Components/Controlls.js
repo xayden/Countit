@@ -54,8 +54,9 @@ export default class Controlls extends Component {
                 <i className="fas fa-play mr-1" /> START
               </button>
             )}
-            <button className="btn btn-danger btn-block" id="reset">
-              <i className="fas fa-skull-crossbones mr-1" /> RESET
+            <button className="btn btn-danger btn-block" id="reset" onClick={this.props.onReset}>
+              <i className="fas fa-skull-crossbones mr-1" />
+              RESET
             </button>
 
             <div className="mt-2">

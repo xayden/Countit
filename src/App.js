@@ -212,6 +212,23 @@ class App extends React.Component {
     this.playAudio();
   };
 
+  reset = () => {
+    this.setState({
+      timers: JSON.parse(localStorage.getItem('timers')) || [],
+      isPlaying: false,
+      currentPlayingTimer: '',
+      pausedTimer: '',
+      finishedTimer: '',
+      afterDeletedTimer: '',
+      wastedTime: 0,
+      audioTimer: 40000,
+      rounds: 0
+    });
+
+    this.stopAudio();
+    this.pauseWastedTimer();
+  };
+
   // Wasted Time
   startWastedTimer = () => {
     this.wastedTime = setInterval(() => {
@@ -272,6 +289,7 @@ class App extends React.Component {
             isNotificationsEnabled={this.state.isNotificationsEnabled}
             requestNotificationPermission={this.requestNotificationPermission}
             disableNotifications={this.disableNotifications}
+            onReset={this.reset}
           />
           <Rounds rounds={this.state.rounds} />
           <WastedTime time={this.state.wastedTime} />
@@ -290,6 +308,7 @@ class App extends React.Component {
                 _id={t._id}
                 time={t.time}
                 timer={t}
+                isPlaying={this.state.isPlaying}
                 onFinish={this.onTimerFinish}
                 onUpdate={this.updateTimer}
                 pausedTimer={this.state.pausedTimer}
