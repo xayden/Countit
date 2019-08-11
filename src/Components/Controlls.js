@@ -11,6 +11,15 @@ export default class Controlls extends Component {
     this.audioInput = React.createRef();
   }
 
+  handleInputChange = async e => {
+    const value = e.target.checked;
+    if (value === true) {
+      this.props.requestNotificationPermission();
+    } else {
+      this.props.disableNotifications();
+    }
+  };
+
   handleAudioInputClick = () => {
     this.audioInput.current.click();
   };
@@ -28,8 +37,6 @@ export default class Controlls extends Component {
         <div className="row no-gutters rounded mb-3 shadow-sm bg-light">
           <div className="col p-3 d-flex flex-column position-static">
             <h5 className="">Controlls</h5>
-            {/* <div className="row no-gutters"> */}
-            {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
             {this.props.isPlaying ? (
               <button className="btn btn-success btn-block" onClick={this.props.switchPlayState}>
                 {this.props.currentPlayingTimer ? (
@@ -47,17 +54,20 @@ export default class Controlls extends Component {
                 <i className="fas fa-play mr-1" /> START
               </button>
             )}
-            {/* </div> */}
-            {/* <div className="col-6 col-sm-12 col-lg-12 col-xl-6 p-1"> */}
             <button className="btn btn-danger btn-block" id="reset">
               <i className="fas fa-skull-crossbones mr-1" /> RESET
             </button>
-            {/* </div> */}
-            {/* </div> */}
 
             <div className="mt-2">
               <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="notificationCheck" />
+                {/* Notifications */}
+                <input
+                  id="notificationCheck"
+                  type="checkbox"
+                  className="form-check-input"
+                  onChange={this.handleInputChange}
+                  checked={this.props.isNotificationsEnabled}
+                />
                 <label className="form-check-label" style={{ fontSize: 14 }} htmlFor="notificationCheck">
                   Notifications
                 </label>

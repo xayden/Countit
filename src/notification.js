@@ -31,6 +31,7 @@ function getUserPermission() {
     if (permissionResult !== 'granted') {
       throw new Error('Permission denied.');
     }
+    return 'granted';
   });
 }
 
@@ -46,6 +47,7 @@ export function supportsNotification() {
 
 export async function requestPermission() {
   permission = await getUserPermission();
+  return permission;
 }
 
 export function getPermission() {

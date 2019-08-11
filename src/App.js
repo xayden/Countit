@@ -34,7 +34,7 @@ class App extends React.Component {
         //   alarm: 'default'
         // }
       ],
-      notificationsEnabled: false,
+      isNotificationsEnabled: false,
 
       // timer related
       isPlaying: false,
@@ -62,8 +62,13 @@ class App extends React.Component {
   }
 
   // Notifications
-  requestNotificationPermission = () => {
-    notification.requestPermission();
+  requestNotificationPermission = async () => {
+    const permission = await notification.requestPermission();
+    this.setState({ isNotificationsEnabled: permission === 'granted' });
+  };
+
+  disableNotifications = () => {
+    this.setState({ isNotificationsEnabled: false });
   };
 
   sendNotification = (title, message) => {
@@ -162,7 +167,10 @@ class App extends React.Component {
       finishedTimer: prevState.currentPlayingTimer
     }));
 
-    this.sendNotification('Time up!', `${finishedTimer.name} count down has finished.`);
+    if (this.state.isNotificationsEnabled) {
+      this.sendNotification('Time up!', `${finishedTimer.name} count down has finished.`);
+    }
+
     this.playAudio();
   };
 
@@ -223,6 +231,9 @@ class App extends React.Component {
             startPlaying={this.startPlaying}
             switchPlayState={this.switchPlayState}
             currentPlayingTimer={this.state.currentPlayingTimer}
+            isNotificationsEnabled={this.state.isNotificationsEnabled}
+            requestNotificationPermission={this.requestNotificationPermission}
+            disableNotifications={this.disableNotifications}
           />
           <Rounds rounds={this.state.rounds} />
           <WastedTime time={this.state.wastedTime} />
