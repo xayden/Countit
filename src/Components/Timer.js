@@ -17,6 +17,30 @@ export default class Timer extends Component {
     this.keys = { ESC: 27, ENTER: 13 };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isPlaying) {
+      this.setState({ currentTime: this.props.time });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.editing && this.state.editing) {
+      const node = document.getElementById(this.state.editing);
+      node.focus();
+      node.select();
+    } else if (
+      prevProps.currentPlayingTimer !== this.props._id &&
+      this.props.currentPlayingTimer === this.props._id
+    ) {
+      this.resume();
+    } else if (
+      prevProps.currentPlayingTimer === this.props._id &&
+      this.props.currentPlayingTimer !== this.props._id
+    ) {
+      this.pause();
+    }
+  }
+
   start = () => {
     this.timer = setInterval(() => {
       this.setState(prevState => {
@@ -83,30 +107,6 @@ export default class Timer extends Component {
       this.handleSaveEdit();
     }
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.isPlaying) {
-      this.setState({ currentTime: this.props.time });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.editing && this.state.editing) {
-      const node = document.getElementById(this.state.editing);
-      node.focus();
-      node.select();
-    } else if (
-      prevProps.currentPlayingTimer !== this.props._id &&
-      this.props.currentPlayingTimer === this.props._id
-    ) {
-      this.resume();
-    } else if (
-      prevProps.currentPlayingTimer === this.props._id &&
-      this.props.currentPlayingTimer !== this.props._id
-    ) {
-      this.pause();
-    }
-  }
 
   render() {
     const { hours, minutes, seconds } = this.humanReadableTime(this.state.currentTime);
