@@ -4,17 +4,20 @@ export default class Timer extends Component {
   constructor(props) {
     super(props);
 
-    const { hours, minutes, seconds } = this.humanReadableTime(this.props.time);
-
     this.state = {
-      hours,
-      minutes,
-      seconds,
-      currentTime: this.props.time,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      currentTime: 0,
       editing: ''
     };
 
     this.keys = { ESC: 27, ENTER: 13 };
+  }
+
+  componentWillMount() {
+    const { hours, minutes, seconds } = this.humanReadableTime(this.props.time);
+    this.setState({ currentTime: this.props.time, hours, minutes, seconds });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -90,14 +93,12 @@ export default class Timer extends Component {
     });
   };
 
-  handleSaveEdit = () => {
+  handleSaveEdit = async () => {
     const ms = this.state.seconds * 1000 + this.state.minutes * 60 * 1000 + this.state.hours * 60 * 60 * 1000;
-    const { hours, minutes, seconds } = this.humanReadableTime(ms);
-
-    this.setState({ currentTime: ms, editing: '', hours, minutes, seconds });
 
     const updatedTimer = { ...this.props.timer, time: ms };
-    this.props.onUpdate(updatedTimer);
+    await this.props.onUpdate(updatedTimer);
+    this.setState({ currentTime: ms, editing: '' });
   };
 
   handleKeyDown = e => {
@@ -117,6 +118,8 @@ export default class Timer extends Component {
 
     if (this.props.timer._id === this.props.currentPlayingTimer) {
       document.title = `${hours}:${minutes}:${seconds}`;
+    } else if (this.props.timer._id === this.props.pausedTimer) {
+      document.title = `PAUSED - ${hours}:${minutes}:${seconds}`;
     }
 
     return (
