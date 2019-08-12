@@ -81,7 +81,7 @@ export default class TimerWraper extends Component {
   render() {
     return (
       <div className="col-12 col-sm-4 col-lg-3 col-xl-2">
-        <div className="rounded overflow-hidden mb-4 shadow-sm bg-light">
+        <div className="rounded overflow-hidden mb-2 shadow-sm bg-light">
           <div className="d-flex align-items-start flex-column justify-content-between h-196 p-3">
             <div className="d-flex w-100">
               <h6 className="mr-auto">

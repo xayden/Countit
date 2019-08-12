@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import Container from './Components/Container';
 import Row from './Components/Row';
 
-import Controlls from './Components/Controlls';
+import Controls from './Components/Controls';
 import Rounds from './Components/Rounds';
 import WastedTime from './Components/WastedTime';
 import SuccessAlert from './Components/SuccessAlert';
@@ -281,7 +281,7 @@ class App extends React.Component {
       <Container>
         <Row>
           <SuccessAlert show={this.state.finishedTimer !== ''} playNextTimer={this.startNextTimer} />
-          <Controlls
+          <Controls
             isPlaying={this.state.isPlaying}
             startPlaying={this.startPlaying}
             switchPlayState={this.switchPlayState}

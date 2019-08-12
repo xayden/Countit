@@ -52,9 +52,9 @@ export default class Controlls extends Component {
   render() {
     return (
       <div className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2">
-        <div className="row no-gutters rounded mb-3 shadow-sm bg-light">
+        <div className="row no-gutters rounded mb-2 shadow-sm bg-light">
           <div className="col p-3 d-flex flex-column position-static">
-            <h5 className="">Controlls</h5>
+            <h5 className="">Controls</h5>
             {this.props.isPlaying ? (
               <button className="btn btn-success btn-block" onClick={this.props.switchPlayState}>
                 {this.props.currentPlayingTimer ? (
