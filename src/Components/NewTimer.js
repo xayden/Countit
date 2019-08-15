@@ -44,7 +44,7 @@ export default class NewTimer extends Component {
     return (
       <Fragment>
         {this.props.isAdding ? (
-          <div className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2">
+          <div className="col-12 col-sm-4 col-lg-3 col-xl-2 mb-4">
             <div className="rounded overflow-hidden mb-4 shadow-sm bg-light">
               <div className="d-flex align-items-start flex-column justify-content-between p-3">
                 <div className="d-flex w-100">
@@ -75,7 +75,7 @@ export default class NewTimer extends Component {
             </div>
           </div>
         ) : (
-          <div className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2">
+          <div className="col-12 col-sm-4 col-lg-3 col-xl-2 mb-4">
             <div className="row no-gutters">
               <div className="col d-flex flex-column position-static">
                 <button
