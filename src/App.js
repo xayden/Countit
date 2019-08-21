@@ -252,7 +252,7 @@ class App extends React.Component {
     this.audio.play();
     this.audioTime = setInterval(() => {
       if (this.state.audioTimer <= 0) {
-        this._stopAudio();
+        this.stopAudio();
       } else {
         this.setState(prevState => ({ audioTimer: prevState.audioTimer - 1000 }));
       }
